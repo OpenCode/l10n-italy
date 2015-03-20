@@ -1,0 +1,13 @@
+id,description,name,sequence,amount,parent_id:id,child_depend,type,type_tax_use,ref_base_sign,ref_tax_sign,price_include,base_sign,tax_sign,base_code_id:id,tax_code_id:id,ref_base_code_id:id,ref_tax_code_id:id
+22acee,22acee,IVA CEE 22% (credito),,0.22,,False,percent,purchase,1,1,False,-1,-1,template_impcredito_cee_22,template_ivacredito_cee_22,template_impcredito_cee_22,template_ivacredito_cee_22
+22vcee,22vcee,IVA CEE 22% (debito),,0.22,,False,percent,sale,-1,-1,False,1,1,template_impdebito_cee_22,template_ivadebito_cee_22,template_impdebito_cee_22,template_ivadebito_cee_22
+10acee,10acee,IVA CEE 10% (credito),,0.10,,False,percent,purchase,1,1,False,-1,-1,template_impcredito_cee_10,template_ivacredito_cee_10,template_impcredito_cee_10,template_ivacredito_cee_10
+10vcee,10vcee,IVA CEE 10% (debito),,0.10,,False,percent,sale,-1,-1,False,1,1,template_impdebito_cee_10,template_ivadebito_cee_10,template_impdebito_cee_10,template_ivadebito_cee_10
+4acee,4acee,IVA CEE 4% (credito),,0.04,,False,percent,purchase,1,1,False,-1,-1,template_impcredito_cee_4,template_ivacredito_cee_4,template_impcredito_cee_4,template_ivacredito_cee_4
+4vcee,4vcee,IVA CEE 4% (debito),,0.04,,False,percent,sale,-1,-1,False,1,1,template_impdebito_cee_4,template_ivadebito_cee_4,template_impdebito_cee_4,template_ivadebito_cee_4
+22arc,22arc,IVA RC 22% (credito),,0.22,,False,percent,purchase,1,1,False,-1,-1,template_impcredito_rc_22,template_ivacredito_rc_22,template_impcredito_rc_22,template_ivacredito_rc_22
+22vrc,22vrc,IVA RC 22% (debito),,0.22,,False,percent,sale,-1,-1,False,1,1,template_impdebito_rc_22,template_ivadebito_rc_22,template_impdebito_rc_22,template_ivadebito_rc_22
+10arc,10arc,IVA RC 10% (credito),,0.10,,False,percent,purchase,1,1,False,-1,-1,template_impcredito_rc_10,template_ivacredito_rc_10,template_impcredito_rc_10,template_ivacredito_rc_10
+10vrc,10vrc,IVA RC 10% (debito),,0.1,,False,percent,sale,-1,-1,False,1,1,template_impdebito_rc_10,template_ivadebito_rc_10,template_impdebito_rc_10,template_ivadebito_rc_10
+4arc,4arc,IVA RC 4% (credito),,0.04,,False,percent,purchase,1,1,False,-1,-1,template_impcredito_rc_4,template_ivacredito_rc_4,template_impcredito_rc_4,template_ivacredito_rc_4
+4vrc,4vrc,IVA RC 4% (debito),,0.04,,False,percent,sale,-1,-1,False,1,1,template_impdebito_rc_4,template_ivadebito_rc_4,template_impdebito_rc_4,template_ivadebito_rc_4

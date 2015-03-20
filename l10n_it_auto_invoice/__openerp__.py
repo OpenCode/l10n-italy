@@ -29,9 +29,11 @@
     'website': 'http://www.apuliasoftware.it',
     'license': 'AGPL-3',
     "depends": ['base', 'account', 'account_voucher', 'account_cancel',
-                'account_invoice_entry_date'],
+                'account_invoice_entry_date', 'l10n_it'],
     "init_xml": [],
-    "update_xml": [
+    "data": [
+        'data/account.tax.code.csv',
+        'data/account.tax.csv',
         'company/company_view.xml',
         'account/account_view.xml',
         'account/account_data.xml',

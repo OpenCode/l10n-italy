@@ -1,0 +1,28 @@
+code,id,name
+IVC22CEE,template_ivacredito_cee_22,IVA a credito CEE 22%
+IVC22ICEE,template_impcredito_cee_22,IVA a credito CEE 22% (imponibile)
+IVC10CEE,template_ivacredito_cee_10,IVA a credito CEE 10%
+IVC10ICEE,template_impcredito_cee_10,IVA a credito CEE 10% (imponibile)
+IVC4CEE,template_ivacredito_cee_4,IVA a credito CEE 4%
+IVC4ICEE,template_impcredito_cee_4,IVA a credito CEE 4% (imponibile)
+,,
+IVD22CEE,template_ivadebito_cee_22,IVA a debito CEE 22%
+IVD22ICEE,template_impdebito_cee_22,IVA a debito CEE 22% (imponibile)
+IVD10CEE,template_ivadebito_cee_10,IVA a debito CEE 10%
+IVD10ICEE,template_impdebito_cee_10,IVA a debito CEE 10% (imponibile)
+IVD4CEE,template_ivadebito_cee_4,IVA a debito CEE 4%
+IVD4ICEE,template_impdebito_cee_4,IVA a debito CEE 4% (imponibile)
+,,
+IVC22RC,template_ivacredito_rc_22,IVA a credito RC 22%
+IVC22IRC,template_impcredito_rc_22,IVA a credito RC 22% (imponibile)
+IVC10RC,template_ivacredito_rc_10,IVA a credito RC 10%
+IVC10IRC,template_impcredito_rc_10,IVA a credito RC 10% (imponibile)
+IVC4RC,template_ivacredito_rc_4,IVA a credito RC 4%
+IVC4IRC,template_impcredito_rc_4,IVA a credito RC 4% (imponibile)
+,,
+IVD22RC,template_ivadebito_rc_22,IVA a debito RC 22%
+IVD22IRC,template_impdebito_rc_22,IVA a debito RC 22% (imponibile)
+IVD10RC,template_ivadebito_rc_10,IVA a debito RC 10%
+IVD10IRC,template_impdebito_rc_10,IVA a debito RC 10% (imponibile)
+IVD4RC,template_ivadebito_rc_4,IVA a debito RC 4%
+IVD4IRC,template_impdebito_rc_4,IVA a debito RC 4% (imponibile)

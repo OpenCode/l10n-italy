@@ -24,6 +24,8 @@ from openerp.osv import fields, osv, expression
 from openerp.tools.translate import _
 import openerp.addons.decimal_precision as dp
 from urllib import urlencode, quote as quote
+from openerp import models, api, _
+from openerp import fields as fields8
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -416,123 +418,9 @@ class account_invoice(osv.osv):
             new_invoice = self.browse(cr, uid, auto_invoice_id, context)
             # ----- Validate invoice
             new_invoice.signal_workflow('invoice_open')
-            # -----
-            # Create tranfer entry movements
-            # -----
-            account_move_line_vals = []
-            # ----- Tax for supplier
-            debit_1 = credit_1 = 0.0
-            debit_2 = credit_2 = 0.0
-            debit_3 = credit_3 = 0.0
-            if inv.type == 'in_invoice':
-                debit_1 = inv.auto_invoice_amount_tax
-                debit_2 = inv.auto_invoice_amount_untaxed
-                credit_3 = inv.auto_invoice_amount_total
-            else:
-                credit_1 = inv.auto_invoice_amount_tax
-                credit_2 = inv.auto_invoice_amount_untaxed
-                debit_3 = inv.auto_invoice_amount_total
-            account_move_line_vals.append((0, 0, {
-                'name': 'Tax for Supplier',
-                'debit': debit_1,
-                'credit': credit_1,
-                'partner_id': inv.partner_id.id,
-                'account_id':
-                new_invoice.partner_id.property_account_payable.id,
-                }))
-            # ----- Products values
-            account_move_line_vals.append((0, 0, {
-                'name': 'Products',
-                'debit': debit_2,
-                'credit': credit_2,
-                'partner_id': new_invoice.partner_id.id,
-                'account_id': fiscal_position.account_transient_id.id,
-                }))
-            # ----- Invoice Total
-            account_move_line_vals.append((0, 0, {
-                'name': 'Invoice Total',
-                'debit': debit_3,
-                'credit': credit_3,
-                'partner_id': new_invoice.partner_id.id,
-                'account_id':
-                new_invoice.partner_id.property_account_receivable.id,
-                }))
-            # ----- Account Move
-            account_move_vals = {
-                'name': '/',
-                'state': 'draft',
-                'period_id': inv.period_id and inv.period_id.id or False,
-                'journal_id': fiscal_position.journal_transfer_entry_id.id,
-                'line_id': account_move_line_vals,
-                'date': inv.registration_date,
-                }
-            transfer_entry_id = move_obj.create(
-                cr, uid, account_move_vals, context)
-            move_obj.post(cr, uid, [transfer_entry_id], context)
-            # ----- Link the tranfer entry move and auto invoice
-            #       to supplier invoice
             self.write(cr, uid, [inv.id],
-                       {'auto_invoice_id': auto_invoice_id,
-                        'transfer_entry_id': transfer_entry_id})
-            # ----- Pay Autoinvoice
-            voucher_autoinvoice_id = self.voucher_from_invoice(
-                cr, uid, new_invoice.id, new_invoice.amount_total,
-                fiscal_position.journal_transfer_entry_id.id, 'receipt',
-                context)
-            # ----- Thanks to Alessandro Camilli for fix
-            # ----- Create a payment for vat of supplier invoice
-            voucher_vat_supplier_id = self.voucher_from_invoice(
-                cr, uid, inv.id, inv.auto_invoice_amount_tax,
-                fiscal_position.journal_transfer_entry_id.id,
-                'payment', context)
-            # ----- Reconcile Credit of vat supplier payment with transfer move
-            voucher_obj = self.pool['account.voucher']
-            move_line_obj = self.pool['account.move.line']
-            transfer_move = move_obj.browse(cr, uid, transfer_entry_id)
-            line_voucher_to_be_reconcile = False
-            line_supplier_to_be_reconcile = False
-            # ----- Voucher vat supplier
-            voucher_vat_supplier = voucher_obj.browse(cr, uid,
-                                                      voucher_vat_supplier_id)
-            for move_line in voucher_vat_supplier.move_id.line_id:
-                if not move_line.reconcile and move_line.credit:
-                    line_voucher_to_be_reconcile = move_line.id
-            # ------ Transfer line
-            account_payable_id = new_invoice.partner_id.property_account_payable.id
-            for move_line in transfer_move.line_id:
-                if not move_line.reconcile and move_line.debit \
-                        and move_line.account_id.id == account_payable_id:
-                    line_supplier_to_be_reconcile = move_line.id
-            # ----- Reconcile
-            if line_voucher_to_be_reconcile and line_supplier_to_be_reconcile:
-                reconcile_ids = [line_voucher_to_be_reconcile,
-                                 line_supplier_to_be_reconcile]
-                move_line_obj.reconcile_partial(cr, uid, reconcile_ids,
-                                                context=context)
-            # ----- Reconcile Debit of Total Autoinvoice
-            #       payment with transfer move
-            line_voucher_to_be_reconcile = False
-            line_autoinvoice_to_be_reconcile = False
-            # ----- Voucher debit autoinvoice payment
-            voucher_autoinvoice = voucher_obj.browse(
-                cr, uid, voucher_autoinvoice_id)
-            for move_line in voucher_autoinvoice.move_id.line_id:
-                if not move_line.reconcile and move_line.debit:
-                    line_voucher_to_be_reconcile = move_line.id
-            # ----- Transfer line
-            account_receivable_id = new_invoice.partner_id.property_account_receivable.id
-            for move_line in transfer_move.line_id:
-                if not move_line.reconcile and move_line.credit \
-                        and move_line.account_id.id == account_receivable_id:
-                    line_autoinvoice_to_be_reconcile = move_line.id
-            # ----- Reconcile
-            if line_voucher_to_be_reconcile and \
-                    line_autoinvoice_to_be_reconcile:
-                reconcile_ids = [line_voucher_to_be_reconcile,
-                                 line_autoinvoice_to_be_reconcile]
-                move_line_obj.reconcile_partial(cr, uid, reconcile_ids,
-                                                context=context)
-            # ----- / Thanks to Alessandro Camilli for fix
+                       {'auto_invoice_id': auto_invoice_id}, context)
+
         return new_invoice_ids
 
     def action_number(self, cr, uid, ids, context=None):
@@ -591,3 +479,112 @@ class account_invoice(osv.osv):
             account_move.unlink(cr, uid, move_ids, context)
         return super(account_invoice, self).action_cancel(
             cr, uid, ids, context)
+
+    @api.multi
+    def finalize_invoice_move_lines(self, move_lines):
+        super(account_invoice, self).finalize_invoice_move_lines(move_lines)
+        # modify some data in move lines
+        if (self.type == 'in_invoice' or self.type == 'in_refund'):
+            fiscal_position = self.fiscal_position
+            # ----- Check if fiscal positon is active for intra CEE invoice
+            if not fiscal_position:
+                return move_lines
+            if not (fiscal_position.active_intra_cee or
+                    fiscal_position.active_reverse_charge or
+                    fiscal_position.active_extra_ue_service):
+                return move_lines
+            if fiscal_position.active_intra_cee:
+                amount_vat = self.amount_tax
+
+            if fiscal_position.active_reverse_charge:
+                amount_vat = 0.0
+                for tax in self.tax_line:
+                    if not tax.base_code_id.rc:
+                        continue
+                    amount_vat += tax.amount
+            if fiscal_position.active_extra_ue_service:
+                amount_vat = self.amount_tax
+            cli_account_id = self.partner_id.property_account_receivable.id
+            new_line = {
+                'name': '/',
+                'debit': 0.0,
+                'partner_id': self.partner_id.id,
+                'account_id': cli_account_id}
+            if self.type == 'in_invoice':
+                new_line.update({'credit': amount_vat})
+            if self.type == 'in_refund':
+                new_line.update({'debit': amount_vat})
+            reconcile = self.env[
+                'account.move.reconcile'].create({'type': 'manual'})
+            if reconcile:
+                new_line.update({'reconcile_id': reconcile.id})
+            number = 0
+            for line in move_lines:
+                if 'date_maturity' in line[2] \
+                        and line[2]['date_maturity']:
+                    number += 1
+            for line in move_lines:
+                if 'date_maturity' in line[2] \
+                        and line[2]['date_maturity']:
+                    if self.type == 'in_invoice':
+                        line[2]['credit'] = line[2]['credit'] - (amount_vat / number)
+                    if self.type == 'in_refund':
+                        line[2]['debit'] = line[2]['debit'] - (amount_vat / number)
+            move_lines.append((0, 0, new_line))
+        if (self.type == 'out_invoice' or self.type == 'out_refund'):
+            if not self.origin:
+                return move_lines
+            ref_invoice = self.search(
+                [('internal_number', '=', self.origin)])
+            if not ref_invoice:
+                return move_lines
+            if not ref_invoice.move_id:
+                return move_lines
+            reconcile_id = False
+            for line in ref_invoice.move_id.line_id:
+                if line.reconcile_id:
+                    reconcile_id = line.reconcile_id.id
+                    break
+
+            fiscal_position = self.fiscal_position
+            # ----- Check if fiscal positon is active for intra CEE invoice
+            if not fiscal_position:
+                return move_lines
+            if not (fiscal_position.active_intra_cee or
+                    fiscal_position.active_reverse_charge or
+                    fiscal_position.active_extra_ue_service):
+                return move_lines
+            amount_vat = self.amount_tax
+            cli_account_id = self.partner_id.property_account_receivable.id
+            new_line = {
+                'name': '/',
+                'debit': 0.0,
+                'partner_id': self.partner_id.id,
+                'account_id': cli_account_id,
+                'reconcile_id': reconcile_id,
+                }
+            if self.type == 'out_invoice':
+                new_line.update({'debit': amount_vat})
+            if self.type == 'out_refund':
+                new_line.update({'credit': amount_vat})
+            number = 0
+            for line in move_lines:
+                if 'date_maturity' in line[2] \
+                        and line[2]['date_maturity']:
+                    number += 1
+            for line in move_lines:
+                if 'date_maturity' in line[2] \
+                        and line[2]['date_maturity']:
+                    line[2]['account_id'] = fiscal_position.account_transient_id.id
+                    if self.type == 'out_invoice':
+                        line[2]['debit'] = line[2]['debit'] - (amount_vat / number)
+                    if self.type == 'out_refund':
+                        line[2]['credit'] = line[2]['credit'] - (amount_vat / number)
+            move_lines.append((0, 0, new_line))
+        return move_lines
+
+class AccountTaxCode(models.Model):
+
+    _inherit = 'account.tax.code'
+
+    rc = fields8.Boolean('Use only for Reverse Charge')
