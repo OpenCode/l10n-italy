@@ -19,22 +19,5 @@
 #
 ##############################################################################
 
-{
-    'name': 'DDT',
-    'version': '1.0',
-    'category': 'Localization/Italy',
-    'summary': 'Documento di Trasporto',
-    'author': 'Francesco Apruzzese, Odoo Community Association (OCA), '
-              'Apulia Software',
-    'website': 'http://www.odoo-italia.org/',
-    'license': 'AGPL-3',
-    'depends': [
-        'stock_picking_package_preparation',
-        'stock_picking_package_preparation_line',
-        ],
-    'data': [
-        'views/stock_picking_package_preparation.xml',
-        ],
-    'test': [],
-    'installable': True,
-}
+
+from . import stock_picking_package_preparation

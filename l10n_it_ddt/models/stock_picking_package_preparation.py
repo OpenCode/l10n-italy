@@ -1,0 +1,91 @@
+# -*- coding: utf-8 -*-
+##############################################################################
+#
+#    Copyright (C) 2015 Apulia Software s.r.l. (http://www.apuliasoftware.it)
+#    @author Francesco Apruzzese <f.apruzzese@apuliasoftware.it>
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU Affero General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+##############################################################################
+
+
+from openerp import models, fields, api, exceptions, _
+
+
+class StockDdtCarriageCondition(models.Model):
+
+    _name = "stock.ddt.carriage_condition"
+    _description = "Carriage Condition"
+
+    name = fields.Char(string='Carriage Condition', required=True)
+    note = fields.Text(string='Note')
+
+
+class StockDdtGoodsDescription(models.Model):
+
+    _name = 'stock.ddt.goods_description'
+    _description = "Description of Goods"
+
+    name = fields.Char(string='Description of Goods', required=True)
+    note = fields.Text(string='Note')
+
+
+class StockDdtTransportationReason(models.Model):
+
+    _name = 'stock.ddt.transportation_reason'
+    _description = 'Reason for Transportation'
+
+    name = fields.Char(string='Reason For Transportation', required=True)
+    note = fields.Text(string='Note')
+
+
+class StockDdtTransportationMethod(models.Model):
+
+    _name = 'stock.ddt.transportation_method'
+    _description = 'Method of Transportation'
+
+    name = fields.Char(string='Method of Transportation', required=True)
+    note = fields.Text(string='Note')
+
+class StockDdtType(models.Model):
+
+    _name = 'stock.ddt.type'
+    _description = 'Stock DdT Type'
+    _inherit = ['mail.thread']
+
+    name = fields.Char(required=True)
+    sequence_id = fields.Many2one('ir.sequence', required=True)
+    note = fields.Text(string='Note')
+
+
+class StockPickingPackagePreparation(models.Model):
+
+    _inherit = 'stock.picking.package.preparation'
+
+    ddt_type_id = fields.Many2one('stock.ddt.type',
+                                  string='DdT Type')
+    ddt_number = fields.Char(string='DdT Number')
+    carriage_condition_id = fields.Many2one(
+        'stock.ddt.carriage_condition', 'Carriage Condition')
+    goods_description_id = fields.Many2one(
+        'stock.ddt.goods_description', 'Description of Goods')
+    transportation_reason_id = fields.Many2one(
+        'stock.ddt.transportation_reason',
+        'Reason for Transportation')
+    transportation_method_id = fields.Many2one(
+        'stock.ddt.transportation_method',
+        'Method of Transportation')
+    carrier_id = fields.Many2one(
+        'res.partner', string='Carrier')
+    parcels = fields.Integer()

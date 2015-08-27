@@ -7,6 +7,13 @@ DDT Module
 This is a refactoring of the previews module (l10n_it_ddt v8).
 Now ddt strucutre is based on Package Preparation
 
+Installation
+============
+
+Please, use this stock-logistics-workflow fork, for now
+
+https://github.com/OpenCode/stock-logistics-workflow
+
 Usage
 =====
 
