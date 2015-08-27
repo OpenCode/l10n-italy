@@ -9,18 +9,29 @@
         <field name="model">stock.picking.package.preparation</field>
         <field name="inherit_id" ref="stock_picking_package_preparation.stock_picking_package_preparation_form"/>
         <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="ddt_number" readonly="1"
+                       attrs="{'invisible':[('ddt_number', '=', ''), ('ddt_type_id', '=', False)]}"/>
+            </field>
             <field name="partner_id" position="before">
                 <field name="ddt_type_id" widget="selection"/>
             </field>
             <page string="Operations" position="after">
-                <page string="Shipping Informations">
+                <page string="Shipping Informations"
+                      attrs="{'invisible':[('ddt_type_id', '=', False)]}">
                     <group>
-                        <field name="carriage_condition_id" />
-                        <field name="goods_description_id" />
-                        <field name="transportation_reason_id" />
-                        <field name="transportation_method_id" />
-                        <field name="carrier_id" />
-                        <field name="parcels" />
+                        <field name="carriage_condition_id"
+                               attrs="{'required':[('ddt_type_id', '!=', False)]}"/>
+                        <field name="goods_description_id"
+                               attrs="{'required':[('ddt_type_id', '!=', False)]}"/>
+                        <field name="transportation_reason_id"
+                               attrs="{'required':[('ddt_type_id', '!=', False)]}"/>
+                        <field name="transportation_method_id"
+                               attrs="{'required':[('ddt_type_id', '!=', False)]}"/>
+                        <field name="carrier_id"
+                               attrs="{'required':[('ddt_type_id', '!=', False)]}"/>
+                        <field name="parcels"
+                               attrs="{'required':[('ddt_type_id', '!=', False)]}"/>
                     </group>
                 </page>
             </page>

@@ -89,3 +89,12 @@ class StockPickingPackagePreparation(models.Model):
     carrier_id = fields.Many2one(
         'res.partner', string='Carrier')
     parcels = fields.Integer()
+
+    @api.multi
+    def action_put_in_pack(self):
+        for package in self:
+            # ----- Assign ddt number if ddt type is set
+            if package.ddt_type_id and not package.ddt_number:
+                package.ddt_number = package.ddt_type_id.sequence_id.get(
+                    package.ddt_type_id.sequence_id.code)
+        return super(StockPickingPackagePreparation, self).action_put_in_pack()
