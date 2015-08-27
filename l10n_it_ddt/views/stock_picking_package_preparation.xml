@@ -4,6 +4,17 @@
 
     <!-- DdT Views -->
 
+    <record id="ddt_stock_picking_package_preparation_tree" model="ir.ui.view">
+        <field name="name">ddt.stock.picking.package.preparation.tree</field>
+        <field name="model">stock.picking.package.preparation</field>
+        <field name="inherit_id" ref="stock_picking_package_preparation.stock_picking_package_preparation_tree"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="ddt_number" />
+            </field>
+        </field>
+    </record>
+
     <record id="ddt_stock_picking_package_preparation_form" model="ir.ui.view">
         <field name="name">ddt.stock.picking.package.preparation.form</field>
         <field name="model">stock.picking.package.preparation</field>
