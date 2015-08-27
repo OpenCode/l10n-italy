@@ -33,6 +33,7 @@
         'stock_picking_package_preparation_line',
         ],
     'data': [
+        'data/ddt_data.xml',
         'views/stock_picking_package_preparation.xml',
         ],
     'test': [],
