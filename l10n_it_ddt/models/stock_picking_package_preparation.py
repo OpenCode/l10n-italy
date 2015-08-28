@@ -23,36 +23,36 @@
 from openerp import models, fields, api, exceptions, _
 
 
-class StockDdtCarriageCondition(models.Model):
+class StockPickingCarriageCondition(models.Model):
 
-    _name = "stock.ddt.carriage_condition"
+    _name = "stock.picking.carriage_condition"
     _description = "Carriage Condition"
 
     name = fields.Char(string='Carriage Condition', required=True)
     note = fields.Text(string='Note')
 
 
-class StockDdtGoodsDescription(models.Model):
+class StockPickingGoodsDescription(models.Model):
 
-    _name = 'stock.ddt.goods_description'
+    _name = 'stock.picking.goods_description'
     _description = "Description of Goods"
 
     name = fields.Char(string='Description of Goods', required=True)
     note = fields.Text(string='Note')
 
 
-class StockDdtTransportationReason(models.Model):
+class StockPickingTransportationReason(models.Model):
 
-    _name = 'stock.ddt.transportation_reason'
+    _name = 'stock.picking.transportation_reason'
     _description = 'Reason for Transportation'
 
     name = fields.Char(string='Reason For Transportation', required=True)
     note = fields.Text(string='Note')
 
 
-class StockDdtTransportationMethod(models.Model):
+class StockPickingTransportationMethod(models.Model):
 
-    _name = 'stock.ddt.transportation_method'
+    _name = 'stock.picking.transportation_method'
     _description = 'Method of Transportation'
 
     name = fields.Char(string='Method of Transportation', required=True)
@@ -77,14 +77,14 @@ class StockPickingPackagePreparation(models.Model):
                                   string='DdT Type')
     ddt_number = fields.Char(string='DdT Number')
     carriage_condition_id = fields.Many2one(
-        'stock.ddt.carriage_condition', 'Carriage Condition')
+        'stock.picking.carriage_condition', 'Carriage Condition')
     goods_description_id = fields.Many2one(
-        'stock.ddt.goods_description', 'Description of Goods')
+        'stock.picking.goods_description', 'Description of Goods')
     transportation_reason_id = fields.Many2one(
-        'stock.ddt.transportation_reason',
+        'stock.picking.transportation_reason',
         'Reason for Transportation')
     transportation_method_id = fields.Many2one(
-        'stock.ddt.transportation_method',
+        'stock.picking.transportation_method',
         'Method of Transportation')
     carrier_id = fields.Many2one(
         'res.partner', string='Carrier')

@@ -29,12 +29,14 @@
     'website': 'http://www.odoo-italia.org/',
     'license': 'AGPL-3',
     'depends': [
+        'sale',
         'stock_picking_package_preparation',
         'stock_picking_package_preparation_line',
         ],
     'data': [
         'data/ddt_data.xml',
         'views/stock_picking_package_preparation.xml',
+        'views/sale.xml',
         ],
     'test': [],
     'installable': True,

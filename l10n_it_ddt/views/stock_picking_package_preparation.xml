@@ -91,8 +91,8 @@
     <menuitem action="action_ddt_type_tree" id="menu_action_ddt_type_tree" parent="menu_stock_ddt_data"/>
 
     <record id="view_carriage_condition_tree" model="ir.ui.view">
-        <field name="name">stock.ddt.carriage_condition.tree</field>
-        <field name="model">stock.ddt.carriage_condition</field>
+        <field name="name">stock.picking.carriage_condition.tree</field>
+        <field name="model">stock.picking.carriage_condition</field>
         <field name="type">tree</field>
         <field name="arch" type="xml">
             <tree string="Carriage Conditions">
@@ -102,8 +102,8 @@
     </record>
 
     <record id="view_carriage_condition_form" model="ir.ui.view">
-        <field name="name">stock.ddt.carriage_condition.form</field>
-        <field name="model">stock.ddt.carriage_condition</field>
+        <field name="name">stock.picking.carriage_condition.form</field>
+        <field name="model">stock.picking.carriage_condition</field>
         <field name="type">form</field>
         <field name="arch" type="xml">
             <form string="Carriage Condition">
@@ -117,7 +117,7 @@
 
     <record id="action_carriage_condition_tree" model="ir.actions.act_window">
         <field name="name">Carriage Conditions</field>
-        <field name="res_model">stock.ddt.carriage_condition</field>
+        <field name="res_model">stock.picking.carriage_condition</field>
         <field name="type">ir.actions.act_window</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
@@ -126,8 +126,8 @@
     <menuitem action="action_carriage_condition_tree" id="menu_action_carriage_condition_tree" parent="menu_stock_ddt_data"/>
 
     <record id="view_goods_description_tree" model="ir.ui.view">
-        <field name="name">stock.ddt.goods_description.tree</field>
-        <field name="model">stock.ddt.goods_description</field>
+        <field name="name">stock.picking.goods_description.tree</field>
+        <field name="model">stock.picking.goods_description</field>
         <field name="type">tree</field>
         <field name="arch" type="xml">
             <tree string="Descriptions of Goods">
@@ -136,8 +136,8 @@
         </field>
     </record>
     <record id="stock_goods_description_form" model="ir.ui.view">
-        <field name="name">stock.ddt.goods_description.form</field>
-        <field name="model">stock.ddt.goods_description</field>
+        <field name="name">stock.picking.goods_description.form</field>
+        <field name="model">stock.picking.goods_description</field>
         <field name="type">form</field>
         <field name="arch" type="xml">
             <form string="Description of Goods">
@@ -151,7 +151,7 @@
 
     <record id="action_goods_description_tree" model="ir.actions.act_window">
         <field name="name">Descriptions of Goods</field>
-        <field name="res_model">stock.ddt.goods_description</field>
+        <field name="res_model">stock.picking.goods_description</field>
         <field name="type">ir.actions.act_window</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
@@ -160,8 +160,8 @@
     <menuitem action="action_goods_description_tree" id="menu_action_good_description_tree" parent="menu_stock_ddt_data"/>
 
     <record id="view_transportation_reason_tree" model="ir.ui.view">
-        <field name="name">stock.ddt.transportation_reason.tree</field>
-        <field name="model">stock.ddt.transportation_reason</field>
+        <field name="name">stock.picking.transportation_reason.tree</field>
+        <field name="model">stock.picking.transportation_reason</field>
         <field name="type">tree</field>
         <field name="arch" type="xml">
             <tree string="Reasons for Transportation">
@@ -170,8 +170,8 @@
         </field>
     </record>
     <record id="view_transportation_reason_form" model="ir.ui.view">
-        <field name="name">stock.ddt.transportation_reason.form</field>
-        <field name="model">stock.ddt.transportation_reason</field>
+        <field name="name">stock.picking.transportation_reason.form</field>
+        <field name="model">stock.picking.transportation_reason</field>
         <field name="type">form</field>
         <field name="arch" type="xml">
             <form string="Reason for Transportation">
@@ -185,7 +185,7 @@
 
     <record id="action_transportation_reason_tree" model="ir.actions.act_window">
         <field name="name">Reasons for Transportation</field>
-        <field name="res_model">stock.ddt.transportation_reason</field>
+        <field name="res_model">stock.picking.transportation_reason</field>
         <field name="type">ir.actions.act_window</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
@@ -195,8 +195,8 @@
         id="menu_action_transportation_reason_tree" parent="menu_stock_ddt_data"/>
 
     <record id="view_transportation_method_tree" model="ir.ui.view">
-        <field name="name">stock.ddt.transportation_method.tree</field>
-        <field name="model">stock.ddt.transportation_method</field>
+        <field name="name">stock.picking.transportation_method.tree</field>
+        <field name="model">stock.picking.transportation_method</field>
         <field name="type">tree</field>
         <field name="arch" type="xml">
             <tree string="Methods of Transportation">
@@ -205,8 +205,8 @@
         </field>
     </record>
     <record id="view_transportation_method_form" model="ir.ui.view">
-        <field name="name">stock.ddt.transportation_method.form</field>
-        <field name="model">stock.ddt.transportation_method</field>
+        <field name="name">stock.picking.transportation_method.form</field>
+        <field name="model">stock.picking.transportation_method</field>
         <field name="type">form</field>
         <field name="arch" type="xml">
             <form string="Method of Transportation">
@@ -220,7 +220,7 @@
 
     <record id="action_transportation_method_tree" model="ir.actions.act_window">
         <field name="name">Methods of Transportation</field>
-        <field name="res_model">stock.ddt.transportation_method</field>
+        <field name="res_model">stock.picking.transportation_method</field>
         <field name="type">ir.actions.act_window</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
