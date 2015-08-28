@@ -20,6 +20,17 @@
 ##############################################################################
 
 
-from . import stock_picking_package_preparation
-from . import stock
-from . import sale
+from openerp import fields, models, api, workflow
+
+
+class StockPicking(models.Model):
+
+    _inherit = 'stock.picking'
+
+    ddt_ids = fields.Many2many(
+        comodel_name='stock.picking.package.preparation',
+        relation='stock_picking_pack_prepare_rel',
+        column1='stock_picking_id',
+        column2='stock_picking_package_preparation_id',
+        string='DdT',
+        copy=False, )

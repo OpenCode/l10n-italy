@@ -58,6 +58,7 @@ class StockPickingTransportationMethod(models.Model):
     name = fields.Char(string='Method of Transportation', required=True)
     note = fields.Text(string='Note')
 
+
 class StockDdtType(models.Model):
 
     _name = 'stock.ddt.type'

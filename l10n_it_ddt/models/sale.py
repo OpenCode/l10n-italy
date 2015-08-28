@@ -27,13 +27,13 @@ class SaleOrder(models.Model):
 
     _inherit = 'sale.order'
 
-    # @api.one
-    # def _get_ddt_ids(self):
-    #     ddt_ids = []
-    #     for picking in self.picking_ids:
-    #         if picking.ddt_id.id not in ddt_ids:
-    #             ddt_ids.append(picking.ddt_id.id)
-    #     self.ddt_ids = ddt_ids
+    @api.one
+    def _get_ddt_ids(self):
+        ddt_ids = []
+        for picking in self.picking_ids:
+            for ddt in picking.ddt_ids:
+                ddt_ids.append(ddt.id)
+        self.ddt_ids = ddt_ids
 
     carriage_condition_id = fields.Many2one(
         'stock.picking.carriage_condition', 'Carriage Condition')
@@ -46,11 +46,10 @@ class SaleOrder(models.Model):
         'stock.picking.transportation_method',
         'Method of Transportation')
     parcels = fields.Integer()
-    # ddt_ids = fields.Many2many(
-    #     'stock.ddt',
-    #     string='Related DdTs',
-    #     compute='_get_ddt_ids',
-    #     )
+    ddt_ids = fields.Many2many(
+        'stock.picking.package.preparation',
+        string='Related DdTs',
+        compute='_get_ddt_ids', )
     create_ddt = fields.Boolean('Automatically create the DDT')
 
     # def onchange_partner_id(self, cr, uid, ids, partner_id, context=None):
@@ -83,45 +82,41 @@ class SaleOrder(models.Model):
     #         })
     #     return inv_id
 
-    # def action_ship_create(
-    #     self, cr, uid, ids, context=None
-    # ):
-    #     res = super(SaleOrder, self).action_ship_create(
-    #         cr, uid, ids, context=context)
-    #     for order in self.browse(cr, uid, ids, context):
-    #         if order.create_ddt:
-    #             ddt_data = {
-    #                 'partner_id': order.partner_id.id,
-    #                 }
-    #             ddt_pool = self.pool['stock.ddt']
-    #             ddt_id = ddt_pool.create(cr, uid, ddt_data, context=context)
-    #             for picking in order.picking_ids:
-    #                 self.pool.get('stock.picking').write(
-    #                     cr, uid, [picking.id], {'ddt_id': ddt_id})
-    #                 picking.ddt_id = ddt_id
-    #             workflow.trg_validate(
-    #                 uid, 'stock.ddt', ddt_id, 'ddt_confirm', cr)
-    #     return res
+    def action_ship_create(self, cr, uid, ids, context=None):
+        res = super(SaleOrder, self).action_ship_create(
+            cr, uid, ids, context=context)
+        ddt_pool = self.pool['stock.picking.package.preparation']
+        for order in self.browse(cr, uid, ids, context):
+            if order.create_ddt:
+                picking_ids = [p.id for p in order.picking_ids]
+                ddt_data = {
+                    'partner_id': order.partner_id.id,
+                    'picking_ids': [(6, 0, picking_ids)],
+                    }
+                ddt_pool.create(cr, uid, ddt_data, context)
+        return res
 
-    # def action_view_ddt(self, cr, uid, ids, context=None):
-    #     mod_obj = self.pool.get('ir.model.data')
-    #     act_obj = self.pool.get('ir.actions.act_window')
-    #
-    #     result = mod_obj.get_object_reference(
-    #         cr, uid, 'l10n_it_ddt', 'action_stock_ddt')
-    #     id = result and result[1] or False
-    #     result = act_obj.read(cr, uid, [id], context=context)[0]
-    #
-    #     ddt_ids = []
-    #     for so in self.browse(cr, uid, ids, context=context):
-    #         ddt_ids += [ddt.id for ddt in so.ddt_ids]
-    #
-    #     if len(ddt_ids) > 1:
-    #         result['domain'] = "[('id','in',[" + ','.join(
-    #             map(str, ddt_ids)) + "])]"
-    #     else:
-    #         res = mod_obj.get_object_reference(
-    #             cr, uid, 'l10n_it_ddt', 'stock_ddt_form')
-    #         result['views'] = [(res and res[1] or False, 'form')]
-    #         result['res_id'] = ddt_ids and ddt_ids[0] or False
-    #     return result
+    def action_view_ddt(self, cr, uid, ids, context=None):
+        mod_obj = self.pool.get('ir.model.data')
+        act_obj = self.pool.get('ir.actions.act_window')
+
+        result = mod_obj.get_object_reference(
+            cr, uid, 'stock_picking_package_preparation',
+            'action_stock_picking_package_preparation')
+        id = result and result[1] or False
+        result = act_obj.read(cr, uid, [id], context=context)[0]
+
+        ddt_ids = []
+        for so in self.browse(cr, uid, ids, context=context):
+            ddt_ids += [ddt.id for ddt in so.ddt_ids]
+
+        if len(ddt_ids) > 1:
+            result['domain'] = "[('id','in',[" + ','.join(
+                map(str, ddt_ids)) + "])]"
+        else:
+            res = mod_obj.get_object_reference(
+                cr, uid, 'stock_picking_package_preparation',
+                'stock_picking_package_preparation_form')
+            result['views'] = [(res and res[1] or False, 'form')]
+            result['res_id'] = ddt_ids and ddt_ids[0] or False
+        return result
