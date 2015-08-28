@@ -52,24 +52,24 @@ class SaleOrder(models.Model):
         compute='_get_ddt_ids', )
     create_ddt = fields.Boolean('Automatically create the DDT')
 
-    # def onchange_partner_id(self, cr, uid, ids, partner_id, context=None):
-    #     if not context:
-    #         context = {}
-    #     result = super(SaleOrder, self).onchange_partner_id(
-    #         cr, uid, ids, partner_id, context=context)
-    #     if partner_id:
-    #         partner = self.pool.get('res.partner').browse(cr, uid, partner_id)
-    #         result['value'][
-    #             'carriage_condition_id'] = partner.carriage_condition_id.id
-    #         result['value'][
-    #             'goods_description_id'] = partner.goods_description_id.id
-    #         result['value'][
-    #             'transportation_reason_id'
-    #             ] = partner.transportation_reason_id.id
-    #         result['value'][
-    #             'transportation_method_id'
-    #             ] = partner.transportation_method_id.id
-    #     return result
+    def onchange_partner_id(self, cr, uid, ids, partner_id, context=None):
+        if not context:
+            context = {}
+        result = super(SaleOrder, self).onchange_partner_id(
+            cr, uid, ids, partner_id, context=context)
+        if partner_id:
+            partner = self.pool.get('res.partner').browse(cr, uid, partner_id)
+            result['value'][
+                'carriage_condition_id'] = partner.carriage_condition_id.id
+            result['value'][
+                'goods_description_id'] = partner.goods_description_id.id
+            result['value'][
+                'transportation_reason_id'
+                ] = partner.transportation_reason_id.id
+            result['value'][
+                'transportation_method_id'
+                ] = partner.transportation_method_id.id
+        return result
 
     # def _make_invoice(self, cr, uid, order, lines, context=None):
     #     inv_id = super(SaleOrder, self)._make_invoice(
