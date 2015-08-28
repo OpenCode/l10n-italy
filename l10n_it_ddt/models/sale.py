@@ -71,16 +71,16 @@ class SaleOrder(models.Model):
                 ] = partner.transportation_method_id.id
         return result
 
-    # def _make_invoice(self, cr, uid, order, lines, context=None):
-    #     inv_id = super(SaleOrder, self)._make_invoice(
-    #         cr, uid, order, lines, context)
-    #     self.pool.get('account.invoice').write(cr, uid, [inv_id], {
-    #         'carriage_condition_id': order.carriage_condition_id.id,
-    #         'goods_description_id': order.goods_description_id.id,
-    #         'transportation_reason_id': order.transportation_reason_id.id,
-    #         'transportation_method_id': order.transportation_method_id.id,
-    #         })
-    #     return inv_id
+    def _make_invoice(self, cr, uid, order, lines, context=None):
+        inv_id = super(SaleOrder, self)._make_invoice(
+            cr, uid, order, lines, context)
+        self.pool.get('account.invoice').write(cr, uid, [inv_id], {
+            'carriage_condition_id': order.carriage_condition_id.id,
+            'goods_description_id': order.goods_description_id.id,
+            'transportation_reason_id': order.transportation_reason_id.id,
+            'transportation_method_id': order.transportation_method_id.id,
+            })
+        return inv_id
 
     def action_ship_create(self, cr, uid, ids, context=None):
         res = super(SaleOrder, self).action_ship_create(

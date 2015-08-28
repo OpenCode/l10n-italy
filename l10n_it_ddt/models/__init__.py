@@ -22,5 +22,6 @@
 
 from . import stock_picking_package_preparation
 from . import partner
+from . import account
 from . import stock
 from . import sale

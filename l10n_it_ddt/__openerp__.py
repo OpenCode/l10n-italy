@@ -37,6 +37,7 @@
         'data/ddt_data.xml',
         'views/stock_picking_package_preparation.xml',
         'views/partner.xml',
+        'views/account.xml',
         'views/sale.xml',
         ],
     'test': [],
