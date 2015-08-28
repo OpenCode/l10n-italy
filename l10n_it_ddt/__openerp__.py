@@ -40,6 +40,7 @@
         'views/account.xml',
         'views/sale.xml',
         'wizard/add_picking_to_ddt.xml',
+        'wizard/ddt_from_picking.xml',
         ],
     'test': [],
     'installable': True,
