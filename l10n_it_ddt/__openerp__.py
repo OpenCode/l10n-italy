@@ -30,6 +30,7 @@
     'license': 'AGPL-3',
     'depends': [
         'sale',
+        'sale_stock',
         'stock_picking_package_preparation',
         'stock_picking_package_preparation_line',
         ],
