@@ -31,6 +31,8 @@
     'depends': [
         'sale',
         'sale_stock',
+        'stock',
+        'stock_account',
         'stock_picking_package_preparation',
         'stock_picking_package_preparation_line',
         ],
