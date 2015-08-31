@@ -79,7 +79,7 @@ class DdTCreateInvoice(models.TransientModel):
         picking_pool = self.pool['stock.picking']
 
         ddts = ddt_model.browse(self.env.context['active_ids'])
-        partners = set([ddt.partner_id for ddt in ddts])
+        partners = set([ddt.partner_invoice_id for ddt in ddts])
         if len(partners) > 1:
             raise Warning(_("Selected DDTs belong to different partners"))
         pickings = []
@@ -95,7 +95,8 @@ class DdTCreateInvoice(models.TransientModel):
             self.env.cr,
             self.env.uid,
             pickings,
-            self.journal_id.id, group=True, context=None)
+            self.journal_id.id, group=True,
+            context={'ddt_partner_id': ddts[0].partner_invoice_id.id})
         invoice_obj = self.env['account.invoice'].browse(invoices)
         invoice_obj.write({
             'carriage_condition_id': ddts[0].carriage_condition_id.id,

@@ -77,7 +77,7 @@ class StockPickingPackagePreparation(models.Model):
     ddt_type_id = fields.Many2one('stock.ddt.type',
                                   string='DdT Type')
     ddt_number = fields.Char(string='DdT Number')
-    partner_invoce_id = fields.Many2one('res.partner')
+    partner_invoice_id = fields.Many2one('res.partner')
     partner_shipping_id = fields.Many2one('res.partner')
     carriage_condition_id = fields.Many2one(
         'stock.picking.carriage_condition', 'Carriage Condition')
@@ -96,7 +96,7 @@ class StockPickingPackagePreparation(models.Model):
     @api.onchange('partner_id')
     def on_change_partner(self):
         if self.ddt_type_id:
-            self.partner_invoce_id = self.partner_id
+            self.partner_invoice_id = self.partner_id
             self.partner_shipping_id = self.partner_id
 
     @api.multi

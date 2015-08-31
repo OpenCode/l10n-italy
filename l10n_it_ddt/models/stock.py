@@ -34,3 +34,13 @@ class StockPicking(models.Model):
         column2='stock_picking_package_preparation_id',
         string='DdT',
         copy=False, )
+
+    def _get_invoice_vals(self, cr, uid, key, inv_type, journal_id, move,
+                          context=None):
+        if not context:
+            context = {}
+        values = super(StockPicking, self)._get_invoice_vals(
+            cr, uid, key, inv_type, journal_id, move, context)
+        if context.get('ddt_partner_id', False):
+            values['partner_id'] = context['ddt_partner_id']
+        return values
