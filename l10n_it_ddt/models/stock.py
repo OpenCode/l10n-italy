@@ -41,6 +41,7 @@ class StockPicking(models.Model):
             context = {}
         values = super(StockPicking, self)._get_invoice_vals(
             cr, uid, key, inv_type, journal_id, move, context)
+        # ----- Force to use partner invoice from ddt as invoice partner
         if context.get('ddt_partner_id', False):
             values['partner_id'] = context['ddt_partner_id']
         return values
