@@ -20,6 +20,10 @@
         <field name="model">stock.picking.package.preparation</field>
         <field name="inherit_id" ref="stock_picking_package_preparation.stock_picking_package_preparation_form"/>
         <field name="arch" type="xml">
+            <button name="action_draft" position="after">
+                <button name="%(action_ddt_create_invoice)d" type="action" string="Create Invoice"
+                        attrs="{'invisible':['|', ('state', '!=', 'done'), ('ddt_type_id', '=', False)]}"/>
+            </button>
             <field name="name" position="after">
                 <field name="ddt_number" readonly="1"
                        attrs="{'invisible':[('ddt_number', '=', ''), ('ddt_type_id', '=', False)]}"/>
@@ -46,6 +50,18 @@
                     </group>
                 </page>
             </page>
+
+        </field>
+    </record>
+
+    <record id="ddt_sppp_line_stock_picking_package_preparation_form" model="ir.ui.view">
+        <field name="name">ddt.sppp.line.stock.picking.package.preparation.form</field>
+        <field name="model">stock.picking.package.preparation</field>
+        <field name="inherit_id" ref="stock_picking_package_preparation_line.sppp_line_stock_picking_package_preparation_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='line_ids']/form//field[@name='name']" position="after">
+                <field name="invoiceable" />
+            </xpath>
         </field>
     </record>
 

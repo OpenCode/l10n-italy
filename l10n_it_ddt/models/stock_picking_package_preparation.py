@@ -99,3 +99,22 @@ class StockPickingPackagePreparation(models.Model):
                 package.ddt_number = package.ddt_type_id.sequence_id.get(
                     package.ddt_type_id.sequence_id.code)
         return super(StockPickingPackagePreparation, self).action_put_in_pack()
+
+
+class StockPickingPackagePreparationLine(models.Model):
+
+    _inherit = 'stock.picking.package.preparation.line'
+
+    invoiceable = fields.Selection(
+        [('none', 'None'), ('invoiceable', 'Invoiceable')],
+        default='invoiceable')
+
+    @api.multi
+    def get_move_data(self):
+        move_data = super(StockPickingPackagePreparationLine,
+                          self).get_move_data()
+        if self.invoiceable == 'invoiceable':
+            move_data.update({
+                'invoice_state': '2binvoiced',
+                })
+        return move_data
