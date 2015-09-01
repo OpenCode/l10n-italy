@@ -51,8 +51,7 @@
                                attrs="{'required':[('ddt_type_id', '!=', False)]}"/>
                         <field name="transportation_method_id"
                                attrs="{'required':[('ddt_type_id', '!=', False)]}"/>
-                        <field name="carrier_id"
-                               attrs="{'required':[('ddt_type_id', '!=', False)]}"/>
+                        <field name="carrier_id"/>
                         <field name="parcels"
                                attrs="{'required':[('ddt_type_id', '!=', False)]}"/>
                     </group>
