@@ -93,7 +93,7 @@ class StockPickingPackagePreparation(models.Model):
         'res.partner', string='Carrier')
     parcels = fields.Integer()
 
-    @api.onchange('partner_id')
+    @api.onchange('partner_id', 'ddt_type_id')
     def on_change_partner(self):
         if self.ddt_type_id:
             self.partner_invoice_id = self.partner_id
