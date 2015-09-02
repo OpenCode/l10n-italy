@@ -73,6 +73,7 @@ class StockDdtType(models.Model):
 class StockPickingPackagePreparation(models.Model):
 
     _inherit = 'stock.picking.package.preparation'
+    _rec_name = 'display_name'
 
     ddt_type_id = fields.Many2one('stock.ddt.type',
                                   string='DdT Type')
@@ -92,6 +93,7 @@ class StockPickingPackagePreparation(models.Model):
     carrier_id = fields.Many2one(
         'res.partner', string='Carrier')
     parcels = fields.Integer()
+    display_name = fields.Char(string='Name', compute='_compute_display_name')
 
     @api.onchange('partner_id', 'ddt_type_id')
     def on_change_partner(self):
@@ -107,6 +109,22 @@ class StockPickingPackagePreparation(models.Model):
                 package.ddt_number = package.ddt_type_id.sequence_id.get(
                     package.ddt_type_id.sequence_id.code)
         return super(StockPickingPackagePreparation, self).action_put_in_pack()
+
+    @api.one
+    @api.depends('name', 'ddt_number', 'partner_id', 'date')
+    def _compute_display_name(self):
+        name = ''
+        if self.name:
+            name = self.name
+        if self.ddt_number and self.name:
+            name = '[{package}] {ddt}'.format(package=self.name,
+                                              ddt=self.ddt_number)
+        if self.ddt_number and not self.name:
+            name = self.ddt_number
+        if not name:
+            name = '{partner} of {date}'.format(partner=self.partner_id.name,
+                                                date=self.date)
+        self.display_name = name
 
 
 class StockPickingPackagePreparationLine(models.Model):
