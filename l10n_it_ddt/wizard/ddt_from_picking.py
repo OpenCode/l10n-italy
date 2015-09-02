@@ -51,6 +51,8 @@ class DdTFromPickings(models.TransientModel):
                     _("Selected Pickings have different Partner"))
             partner = picking.partner_id
             values['partner_id'] = partner.id
+            values['partner_invoice_id'] = partner.id
+            values['partner_shipping_id'] = partner.id
         parcels = 0
         for picking in self.picking_ids:
             if picking.sale_id and picking.sale_id.parcels:
