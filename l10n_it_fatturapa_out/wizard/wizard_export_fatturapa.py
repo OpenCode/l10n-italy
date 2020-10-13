@@ -656,7 +656,7 @@ class WizardExportFatturapa(models.TransientModel):
             if line.discount:
                 ScontoMaggiorazione = ScontoMaggiorazioneType(
                     Tipo='SC',
-                    Percentuale='{val:.2f}'.format(val=line.discount)
+                    Percentuale='{val:.8f}'.format(val=line.discount)
                 )
                 DettaglioLinea.ScontoMaggiorazione.append(ScontoMaggiorazione)
             if aliquota == 0.0:
